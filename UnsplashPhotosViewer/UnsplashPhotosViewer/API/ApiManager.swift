@@ -40,7 +40,7 @@ private extension ApiManager {
     func createRequest(to urlString: String, for endpoint: ApiEndpoint, and page: Int) throws -> URLRequest {
         guard let url = URL(string: urlString),
               var components = URLComponents(url: url.appendingPathComponent(endpoint.path), resolvingAgainstBaseURL: true),
-              let clientId = ProcessInfo.processInfo.environment["UNSPLASH_ACCESS_KEY"]
+              let clientId = ProcessInfo.processInfo.environment[AppConstants.unsplashAccessKey]
         else {
             throw ApiError.invalidUrl
         }
@@ -48,6 +48,7 @@ private extension ApiManager {
         components.queryItems = [
             URLQueryItem(name: "client_id", value: clientId),
             URLQueryItem(name: "page", value: String(page)),
+            URLQueryItem(name: "per_page", value: String(15)),
         ]
         var request = URLRequest(url: components.url!)
         
