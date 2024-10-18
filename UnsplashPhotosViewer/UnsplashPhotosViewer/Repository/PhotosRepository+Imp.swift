@@ -15,8 +15,8 @@ class PhotosRepositoryImp: PhotosRepository {
         return try await ApiManager.shared.performRequest(for: .photos, and: page)
     }
     
-    func getPhotoDetail(id: String, page: Int) async throws -> PhotoDetail {
-        return try await ApiManager.shared.performRequest(for: .photoDetail(id: id), and: page)
+    func getPhotoDetail(for id: String) async throws -> PhotoDetail {
+        return try await ApiManager.shared.performRequest(for: .photoDetail(id: id))
     }
     
 }

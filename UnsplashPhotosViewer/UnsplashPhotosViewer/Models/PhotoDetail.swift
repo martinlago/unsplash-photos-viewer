@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - Photo detail model
 
-struct PhotoDetail: Decodable {
+struct PhotoDetail: Decodable, Equatable {
     let id: String
     let urls: PhotoURLs
     let likes: Int

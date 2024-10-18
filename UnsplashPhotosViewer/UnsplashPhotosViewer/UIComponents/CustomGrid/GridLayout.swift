@@ -41,8 +41,9 @@ struct CustomGridLayout<Content>: View where Content: View {
                         .enumerated()
                         .map { enumerated -> (element: CGFloat, offset: Int) in
                             let element = (0..<currentLineSpan).reduce(enumerated.element) { alignment, span in
-                                guard alignments.indices.contains(enumerated.offset + span)
-                                else { return -.infinity }
+                                guard alignments.indices.contains(enumerated.offset + span) else {
+                                    return -.infinity
+                                }
                                 return min(alignment, alignments[enumerated.offset + span])
                             }
                             return (element, enumerated.offset)

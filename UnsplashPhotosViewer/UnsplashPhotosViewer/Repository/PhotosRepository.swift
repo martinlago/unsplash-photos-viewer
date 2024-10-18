@@ -11,5 +11,5 @@ import Foundation
 
 protocol PhotosRepository {
     func getPhotos(page: Int) async throws -> Photos
-    func getPhotoDetail(id: String, page: Int) async throws -> PhotoDetail
+    func getPhotoDetail(for id: String) async throws -> PhotoDetail
 }

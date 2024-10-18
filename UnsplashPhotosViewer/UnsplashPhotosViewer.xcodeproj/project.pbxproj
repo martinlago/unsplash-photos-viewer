@@ -24,6 +24,10 @@
 		3C52FF362CC1435A00E47420 /* GridLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C52FF352CC1435A00E47420 /* GridLayout.swift */; };
 		3C52FF392CC1517400E47420 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C52FF382CC1517400E47420 /* HomeView.swift */; };
 		3C52FF3B2CC1518100E47420 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C52FF3A2CC1518100E47420 /* HomeViewModel.swift */; };
+		3C52FF412CC2CCAF00E47420 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C52FF402CC2CCAF00E47420 /* Router.swift */; };
+		3C52FF432CC2CCD600E47420 /* HomeRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C52FF422CC2CCD600E47420 /* HomeRoutes.swift */; };
+		3C52FF462CC2CF1400E47420 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C52FF452CC2CF1400E47420 /* DetailView.swift */; };
+		3C52FF482CC2CF6500E47420 /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C52FF472CC2CF6500E47420 /* DetailViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +50,10 @@
 		3C52FF352CC1435A00E47420 /* GridLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridLayout.swift; sourceTree = "<group>"; };
 		3C52FF382CC1517400E47420 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		3C52FF3A2CC1518100E47420 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		3C52FF402CC2CCAF00E47420 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
+		3C52FF422CC2CCD600E47420 /* HomeRoutes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRoutes.swift; sourceTree = "<group>"; };
+		3C52FF452CC2CF1400E47420 /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
+		3C52FF472CC2CF6500E47420 /* DetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +86,8 @@
 		3C52FF0A2CC0998F00E47420 /* UnsplashPhotosViewer */ = {
 			isa = PBXGroup;
 			children = (
+				3C52FF442CC2CF0900E47420 /* PhotoDetail */,
+				3C52FF3F2CC2CCA800E47420 /* Routing */,
 				3C52FF372CC1516800E47420 /* Home */,
 				3C52FF312CC13D8F00E47420 /* UIComponents */,
 				3C52FF262CC0ACCD00E47420 /* Models */,
@@ -152,8 +162,26 @@
 			children = (
 				3C52FF382CC1517400E47420 /* HomeView.swift */,
 				3C52FF3A2CC1518100E47420 /* HomeViewModel.swift */,
+				3C52FF422CC2CCD600E47420 /* HomeRoutes.swift */,
 			);
 			path = Home;
+			sourceTree = "<group>";
+		};
+		3C52FF3F2CC2CCA800E47420 /* Routing */ = {
+			isa = PBXGroup;
+			children = (
+				3C52FF402CC2CCAF00E47420 /* Router.swift */,
+			);
+			path = Routing;
+			sourceTree = "<group>";
+		};
+		3C52FF442CC2CF0900E47420 /* PhotoDetail */ = {
+			isa = PBXGroup;
+			children = (
+				3C52FF452CC2CF1400E47420 /* DetailView.swift */,
+				3C52FF472CC2CF6500E47420 /* DetailViewModel.swift */,
+			);
+			path = PhotoDetail;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -232,12 +260,16 @@
 			files = (
 				3C52FF282CC0ACDE00E47420 /* Photo.swift in Sources */,
 				3C52FF1E2CC0A24500E47420 /* ApiConstants.swift in Sources */,
+				3C52FF462CC2CF1400E47420 /* DetailView.swift in Sources */,
 				3C52FF332CC13DA700E47420 /* CustomGrid.swift in Sources */,
 				3C52FF3B2CC1518100E47420 /* HomeViewModel.swift in Sources */,
 				3C52FF392CC1517400E47420 /* HomeView.swift in Sources */,
 				3C52FF2E2CC1326D00E47420 /* PhotoURLs.swift in Sources */,
+				3C52FF482CC2CF6500E47420 /* DetailViewModel.swift in Sources */,
 				3C52FF362CC1435A00E47420 /* GridLayout.swift in Sources */,
 				3C52FF2A2CC0ACEA00E47420 /* PhotoDetail.swift in Sources */,
+				3C52FF412CC2CCAF00E47420 /* Router.swift in Sources */,
+				3C52FF432CC2CCD600E47420 /* HomeRoutes.swift in Sources */,
 				3C52FF252CC0AC1600E47420 /* PhotosRepository.swift in Sources */,
 				3C52FF1C2CC0A15E00E47420 /* ApiManager.swift in Sources */,
 				3C52FF302CC135A500E47420 /* PhotosRepository+Imp.swift in Sources */,

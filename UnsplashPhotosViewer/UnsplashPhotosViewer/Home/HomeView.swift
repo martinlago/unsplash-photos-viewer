@@ -11,41 +11,52 @@ import SwiftUI
 
 struct HomeView: View {
     
-    /// ViewModel
+    /// ViewModel and router
     @StateObject var viewModel = HomeViewModel()
+    @StateObject var router: Router<HomeRoute> = Router()
     
     /// State
     @State private var isLoading = true
     @State private var photos: Photos = []
     @State private var currentPage = 1
     @State private var columnsNumber = 2
-        
+    @State private var selectedPhotoId: String = ""
+    
     var body: some View {
-        VStack {
-            if isLoading {
-                ProgressView()
-            } else {
-                ScrollViewReader { proxy in
-                    ScrollView(.vertical) {
-                        CustomGrid(columns: columnsNumber, horizontalSpacing: 24, verticalSpacing: 24) {
-                            ForEach(photos) { photo in
-                                imageView(url: photo.urls.thumb)
-                                    .id(photo.id)
+        NavigationStack(path: $router.path) {
+            VStack {
+                if isLoading {
+                    ProgressView()
+                } else {
+                    ScrollViewReader { proxy in
+                        ScrollView(.vertical) {
+                            CustomGrid(columns: columnsNumber, horizontalSpacing: 24, verticalSpacing: 24) {
+                                ForEach(Array(photos.enumerated()), id: \.element) { (index, photo) in
+                                    imageView(photo: photo, index: index)
+                                        .id(photo.id)
+                                }
                             }
+                            .padding(4)
                         }
-                        .padding(4)
-                    }
-                    .scrollIndicators(.never)
-                    .onChange(of: columnsNumber) {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                            withAnimation {
-                                proxy.scrollTo(photos.first?.id, anchor: .top)
-                            }
+                        .scrollIndicators(.never)
+                        .onChange(of: columnsNumber) {
+                            scrollGrid(in: proxy, for: photos.first?.id)
+                        }
+                        .onChange(of: selectedPhotoId) {
+                            scrollGrid(in: proxy, for: selectedPhotoId)
                         }
                     }
+                    
+                }
+            }
+            .navigationDestination(for: HomeRoute.self) { route in
+                switch route {
+                case .detail:
+                    DetailView(router: router, photoId: $selectedPhotoId, photosIds: photos.map { $0.id })
                 }
             }
         }
+        
         .task {
             getColumnsNumber()
             viewModel.initialization()
@@ -61,11 +72,14 @@ struct HomeView: View {
 
 private extension HomeView {
     
-    func imageView(url: String) -> some View {
-        AsyncImage(url: URL(string: url)) { image in
+    func imageView(photo: Photo, index: Int) -> some View {
+        AsyncImage(url: URL(string: photo.urls.thumb)) { image in
             image
         } placeholder: {
             ProgressView()
+        }
+        .onTapGesture {
+            selectPhoto(with: photo.id)
         }
     }
     
@@ -96,6 +110,19 @@ private extension HomeView {
             columnsNumber = 4
         default:
             columnsNumber = 2
+        }
+    }
+    
+    func selectPhoto(with id: String) {
+        selectedPhotoId = id
+        router.push(.detail)
+    }
+    
+    func scrollGrid(in proxy: ScrollViewProxy, for id: String?) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            withAnimation {
+                proxy.scrollTo(id, anchor: .top)
+            }
         }
     }
     
