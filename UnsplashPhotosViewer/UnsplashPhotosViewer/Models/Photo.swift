@@ -11,7 +11,15 @@ import Foundation
 
 typealias Photos = [Photo]
 
-struct Photo: Decodable {
+struct Photo: Decodable, Equatable, Identifiable, Hashable {
     let id: String
     let urls: PhotoURLs
+}
+
+extension Photo {
+    
+    static func == (lhs: Photo, rhs: Photo) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
 }

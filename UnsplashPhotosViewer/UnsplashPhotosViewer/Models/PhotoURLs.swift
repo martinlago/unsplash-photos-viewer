@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - Photo URLs
 
-struct PhotoURLs: Decodable {
+struct PhotoURLs: Decodable, Equatable, Hashable {
     let raw: String
     let full: String
     let regular: String
