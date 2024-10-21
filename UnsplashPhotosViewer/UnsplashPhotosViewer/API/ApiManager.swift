@@ -54,7 +54,7 @@ private extension ApiManager {
         
         /// Method
         request.httpMethod = endpoint.method
-        request.cachePolicy = .returnCacheDataElseLoad
+        request.cachePolicy = .reloadIgnoringLocalAndRemoteCacheData
                 
         return request
     }

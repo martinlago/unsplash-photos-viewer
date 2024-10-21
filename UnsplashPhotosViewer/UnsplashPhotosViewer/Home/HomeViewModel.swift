@@ -11,6 +11,7 @@ enum HomeState: Equatable {
     case idle
     case loadingPhotos
     case didLoadPhotos(Photos)
+    case loadingMorePhotos
     case error
 }
 
@@ -36,7 +37,21 @@ extension HomeViewModel {
         
         Task {
             do {
-                let photos = try await getPhotos()
+                let photos = try await getPhotos(page: 1)
+                
+                state = .didLoadPhotos(photos)
+            } catch {
+                state = .error
+            }
+        }
+    }
+    
+    func loadMorePhotos(for page: Int) {
+        state = .loadingMorePhotos
+        
+        Task {
+            do {
+                let photos = try await getPhotos(page: page)
                 
                 state = .didLoadPhotos(photos)
             } catch {
@@ -51,8 +66,8 @@ extension HomeViewModel {
 
 private extension HomeViewModel {
     
-    func getPhotos() async throws -> Photos {
-        return try await repository.getPhotos(page: 1)
+    func getPhotos(page: Int) async throws -> Photos {
+        return try await repository.getPhotos(page: page)
     }
     
 }

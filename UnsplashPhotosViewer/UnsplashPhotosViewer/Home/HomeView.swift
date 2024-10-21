@@ -17,6 +17,7 @@ struct HomeView: View {
     
     /// State
     @State private var isLoading = true
+    @State private var isLoadingMorePhotos = true
     @State private var photos: Photos = []
     @State private var currentPage = 1
     @State private var columnsNumber = 2
@@ -28,25 +29,29 @@ struct HomeView: View {
                 if isLoading {
                     ProgressView()
                 } else {
-                    ScrollViewReader { proxy in
-                        ScrollView(.vertical) {
-                            CustomGrid(columns: columnsNumber, horizontalSpacing: 24, verticalSpacing: 24) {
-                                ForEach(Array(photos.enumerated()), id: \.element) { (index, photo) in
-                                    imageView(photo: photo, index: index)
-                                        .id(photo.id)
+                        ScrollViewReader { proxy in
+                            ScrollView(.vertical) {
+                                LazyVStack {
+                                CustomGrid(columns: columnsNumber, horizontalSpacing: 24, verticalSpacing: 24) {
+                                    ForEach(Array(photos.enumerated()), id: \.element) { (index, photo) in
+                                        imageView(photo: photo, index: index)
+                                            .id(photo.id)
+                                    }
                                 }
+                                .padding(4)
+                                .frame(minHeight: UIScreen.main.bounds.height + 100)
+                                
+                                loadingMoreImagesView
                             }
-                            .padding(4)
-                        }
-                        .scrollIndicators(.never)
-                        .onChange(of: columnsNumber) {
-                            scrollGrid(in: proxy, for: photos.first?.id)
-                        }
-                        .onChange(of: selectedPhotoId) {
-                            scrollGrid(in: proxy, for: selectedPhotoId)
+                            .scrollIndicators(.never)
+                            .onChange(of: columnsNumber) {
+                                scrollGrid(in: proxy, for: photos.first?.id)
+                            }
+                            .onChange(of: selectedPhotoId) {
+                                scrollGrid(in: proxy, for: selectedPhotoId)
+                            }
                         }
                     }
-                    
                 }
             }
             .navigationDestination(for: HomeRoute.self) { route in
@@ -56,7 +61,6 @@ struct HomeView: View {
                 }
             }
         }
-        
         .task {
             getColumnsNumber()
             viewModel.initialization()
@@ -83,6 +87,16 @@ private extension HomeView {
         }
     }
     
+    @ViewBuilder
+    var loadingMoreImagesView: some View {
+        ZStack {
+            ProgressView()
+        }
+        .onAppear {
+            loadMoreImages()
+        }
+    }
+    
 }
 
 // MARK: - Helpers
@@ -96,8 +110,13 @@ private extension HomeView {
         case .loadingPhotos:
             isLoading = true
         case .didLoadPhotos(let photos):
-            self.photos = photos
+            withAnimation {
+                self.photos += photos
+            }
             isLoading = false
+            isLoadingMorePhotos = false
+        case .loadingMorePhotos:
+            isLoadingMorePhotos = true
         case .error:
             isLoading = false
             // TODO: Define error case behavior
@@ -124,6 +143,11 @@ private extension HomeView {
                 proxy.scrollTo(id, anchor: .top)
             }
         }
+    }
+    
+    func loadMoreImages() {
+        currentPage += 1
+        viewModel.loadMorePhotos(for: currentPage)
     }
     
 }
