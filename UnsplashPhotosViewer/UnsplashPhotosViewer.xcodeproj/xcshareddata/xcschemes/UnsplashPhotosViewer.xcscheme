@@ -16,7 +16,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "3C52FF072CC0998F00E47420"
-               BuildableName = "UnsplashPhotosViewer.app"
+               BuildableName = "Unsplash Viewer.app"
                BlueprintName = "UnsplashPhotosViewer"
                ReferencedContainer = "container:UnsplashPhotosViewer.xcodeproj">
             </BuildableReference>
@@ -58,7 +58,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3C52FF072CC0998F00E47420"
-            BuildableName = "UnsplashPhotosViewer.app"
+            BuildableName = "Unsplash Viewer.app"
             BlueprintName = "UnsplashPhotosViewer"
             ReferencedContainer = "container:UnsplashPhotosViewer.xcodeproj">
          </BuildableReference>
@@ -82,7 +82,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3C52FF072CC0998F00E47420"
-            BuildableName = "UnsplashPhotosViewer.app"
+            BuildableName = "Unsplash Viewer.app"
             BlueprintName = "UnsplashPhotosViewer"
             ReferencedContainer = "container:UnsplashPhotosViewer.xcodeproj">
          </BuildableReference>

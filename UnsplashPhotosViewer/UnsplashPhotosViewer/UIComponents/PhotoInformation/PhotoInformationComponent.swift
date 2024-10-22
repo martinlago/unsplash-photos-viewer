@@ -98,19 +98,19 @@ private extension PhotoInformation {
         valueLabel.textAlignment = .left
         valueLabel.font = UIFont.systemFont(ofSize: 32)
         
-        let itemStackView = UIStackView(arrangedSubviews: [iconImageView, label])
-        itemStackView.axis = .vertical
-        itemStackView.alignment = .center
-        itemStackView.spacing = 5
-        itemStackView.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        let metadataStackView = UIStackView(arrangedSubviews: [iconImageView, label])
+        metadataStackView.axis = .vertical
+        metadataStackView.alignment = .center
+        metadataStackView.spacing = 5
+        metadataStackView.widthAnchor.constraint(equalToConstant: 80).isActive = true
         
-        let pepitoStackView = UIStackView(arrangedSubviews: [itemStackView, valueLabel])
-        pepitoStackView.axis = .horizontal
-        pepitoStackView.alignment = .center
-        pepitoStackView.distribution = .fillProportionally
-        pepitoStackView.spacing = 5
+        let photoItemStackView = UIStackView(arrangedSubviews: [metadataStackView, valueLabel])
+        photoItemStackView.axis = .horizontal
+        photoItemStackView.alignment = .center
+        photoItemStackView.distribution = .fillProportionally
+        photoItemStackView.spacing = 5
         
-        stackView.addArrangedSubview(pepitoStackView)
+        stackView.addArrangedSubview(photoItemStackView)
     }
     
     func setupConstraints() {
