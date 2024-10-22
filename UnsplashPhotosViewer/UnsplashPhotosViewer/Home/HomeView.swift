@@ -27,14 +27,14 @@ struct HomeView: View {
         NavigationStack(path: $router.path) {
             VStack {
                 if isLoading {
-                    ProgressView()
+                    ProgressView("Loading photos...")
                 } else {
-                        ScrollViewReader { proxy in
-                            ScrollView(.vertical) {
-                                LazyVStack {
-                                CustomGrid(columns: columnsNumber, horizontalSpacing: 24, verticalSpacing: 24) {
-                                    ForEach(Array(photos.enumerated()), id: \.element) { (index, photo) in
-                                        imageView(photo: photo, index: index)
+                    ScrollViewReader { proxy in
+                        ScrollView(.vertical) {
+                            LazyVStack {
+                                CustomGrid(columns: columnsNumber, horizontalSpacing: 16, verticalSpacing: 16) {
+                                    ForEach(photos) { photo in
+                                        imageView(photo: photo)
                                             .id(photo.id)
                                     }
                                 }
@@ -44,9 +44,6 @@ struct HomeView: View {
                                 loadingMoreImagesView
                             }
                             .scrollIndicators(.never)
-                            .onChange(of: columnsNumber) {
-                                scrollGrid(in: proxy, for: photos.first?.id)
-                            }
                             .onChange(of: selectedPhotoId) {
                                 scrollGrid(in: proxy, for: selectedPhotoId)
                             }
@@ -57,7 +54,11 @@ struct HomeView: View {
             .navigationDestination(for: HomeRoute.self) { route in
                 switch route {
                 case .detail:
-                    DetailView(router: router, photoId: $selectedPhotoId, photosIds: photos.map { $0.id })
+                    DetailView(
+                        photoId: $selectedPhotoId,
+                        photosIds: photos.map { $0.id },
+                        isLandscape: columnsNumber == 4
+                    )
                 }
             }
         }
@@ -76,9 +77,13 @@ struct HomeView: View {
 
 private extension HomeView {
     
-    func imageView(photo: Photo, index: Int) -> some View {
+    func imageView(photo: Photo) -> some View {
         AsyncImage(url: URL(string: photo.urls.thumb)) { image in
             image
+                .resizable()
+                .frame(width: (UIScreen.main.bounds.width / CGFloat(columnsNumber)) - (columnsNumber == 4 ? 32 : 12))
+                .scaledToFit()
+                .clipShape(RoundedRectangle(cornerRadius: 32))
         } placeholder: {
             ProgressView()
         }
@@ -118,8 +123,8 @@ private extension HomeView {
         case .loadingMorePhotos:
             isLoadingMorePhotos = true
         case .error:
-            isLoading = false
             // TODO: Define error case behavior
+            isLoading = false
         }
     }
     

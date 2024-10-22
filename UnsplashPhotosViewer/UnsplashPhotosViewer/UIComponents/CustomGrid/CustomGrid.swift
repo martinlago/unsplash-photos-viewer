@@ -41,7 +41,11 @@ struct CustomGrid<Content>: View where Content: View {
                 Color.clear
                     .onChange(of: geometry.size) { (_, newValue) in
                         DispatchQueue.main.async {
-                            contentSize = CGSize(width: newValue.width, height: columns == 4 ? (newValue.height / 2) : newValue.height)
+                            contentSize = CGSize(
+                                width: newValue.width - (columns == 4 ? 132 : 24),
+//                                height: columns == 4 ? (newValue.height / 2) : newValue.height
+                                height: newValue.height / 2
+                            )
                         }
                     }
             }

@@ -15,9 +15,9 @@ struct DetailView: View {
     @StateObject var viewModel = DetailViewModel()
     
     /// Parameters
-    @ObservedObject var router: Router<HomeRoute>
     @Binding var photoId: String
     let photosIds: [String]
+    let isLandscape: Bool
     
     /// State variables
     @State private var isLoading = true
@@ -26,20 +26,11 @@ struct DetailView: View {
     var body: some View {
         TabView(selection: $photoId) {
             ForEach(photosIds, id: \.self) { index in
-                if let detail = detail {
-                    GeometryReader { geometry in
-                        VStack(alignment: .center, spacing: 24) {
-                            Text(detail.description)
-                            
-                            AsyncImage(url: URL(string: detail.urls.regular)) { image in
-                                image
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(maxHeight: geometry.size.height - 180)
-                            } placeholder: {
-                                ProgressView()
-                            }
-                        }
+                ZStack {
+                    if isLoading {
+                        ProgressView("Loading photo...")
+                    } else if let detail = detail {
+                        detailView(for: detail)
                     }
                 }
             }
@@ -54,6 +45,43 @@ struct DetailView: View {
         }
         .onReceive(viewModel.$state, perform: evaluateState)
     }
+}
+
+// MARK: - View helpers
+
+private extension DetailView {
+    
+    @ViewBuilder
+    func detailView(for detail: PhotoDetail) -> some View {
+        GeometryReader { geometry in
+            if isLandscape {
+                HStack {
+                    image(for: detail.urls.small)
+                        .frame(maxWidth: geometry.size.width / 2, maxHeight: geometry.size.height)
+                    PhotoInformationView(model: detail, isLandscape: isLandscape)
+                        .frame(width: geometry.size.width / 2 - 24, height: geometry.size.height)
+                }
+            } else {
+                ZStack {
+                    image(for: detail.urls.regular)
+                        .frame(maxHeight: geometry.size.height - 200)
+                    PhotoInformationView(model: detail, isLandscape: isLandscape)
+                }
+            }
+        }
+    }
+    
+    func image(for url: String) -> some View {
+        AsyncImage(url: URL(string: url)) { image in
+            image
+                .resizable()
+                .scaledToFit()
+        } placeholder: {
+            ProgressView("Loading photo...")
+        }
+
+    }
+    
 }
 
 // MARK: - Helpers
@@ -78,9 +106,5 @@ private extension DetailView {
 }
 
 #Preview {
-    DetailView(
-        router: Router(),
-        photoId: .constant("123"),
-        photosIds: []
-    )
+    DetailView(photoId: .constant("123"), photosIds: [], isLandscape: false)
 }
