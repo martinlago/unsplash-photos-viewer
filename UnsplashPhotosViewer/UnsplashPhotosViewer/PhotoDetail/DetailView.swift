@@ -22,13 +22,17 @@ struct DetailView: View {
     /// State variables
     @State private var isLoading = true
     @State private var detail: PhotoDetail?
+    @State private var isAlertPresented = false
+    
+    @GestureState private var dragOffset: CGSize = .zero
     
     var body: some View {
         TabView(selection: $photoId) {
-            ForEach(photosIds, id: \.self) { index in
+            ForEach(photosIds, id: \.self) { _ in
                 ZStack {
                     if isLoading {
                         ProgressView("Loading photo...")
+                        
                     } else if let detail = detail {
                         detailView(for: detail)
                     }
@@ -44,6 +48,7 @@ struct DetailView: View {
             viewModel.getPhotoDetail(for: photoId)
         }
         .onReceive(viewModel.$state, perform: evaluateState)
+        .alert("An error has ocurred", isPresented: $isAlertPresented, actions: {})
     }
 }
 
@@ -79,7 +84,6 @@ private extension DetailView {
         } placeholder: {
             ProgressView("Loading photo...")
         }
-
     }
     
 }
@@ -99,12 +103,12 @@ private extension DetailView {
             isLoading = false
         case .error:
             isLoading = false
-            // TODO: Define error case behavior
+            isAlertPresented = true
         }
     }
     
 }
 
 #Preview {
-    DetailView(photoId: .constant("123"), photosIds: [], isLandscape: false)
+    DetailView(photoId: .constant("Tnm-287tzHQ"), photosIds: [], isLandscape: false)
 }

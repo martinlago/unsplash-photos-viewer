@@ -22,6 +22,7 @@ struct HomeView: View {
     @State private var currentPage = 1
     @State private var columnsNumber = 2
     @State private var selectedPhotoId: String = ""
+    @State private var isAlertPresented = false
     
     var body: some View {
         NavigationStack(path: $router.path) {
@@ -38,12 +39,14 @@ struct HomeView: View {
                                             .id(photo.id)
                                     }
                                 }
-                                .padding(4)
                                 .frame(minHeight: UIScreen.main.bounds.height + 100)
                                 
                                 loadingMoreImagesView
                             }
                             .scrollIndicators(.never)
+                            .onChange(of: columnsNumber) {
+                                scrollGrid(in: proxy, for: photos.first?.id)
+                            }
                             .onChange(of: selectedPhotoId) {
                                 scrollGrid(in: proxy, for: selectedPhotoId)
                             }
@@ -70,6 +73,7 @@ struct HomeView: View {
         .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
             getColumnsNumber()
         }
+        .alert("An error has ocurred", isPresented: $isAlertPresented, actions: {})
     }
 }
 
@@ -123,8 +127,8 @@ private extension HomeView {
         case .loadingMorePhotos:
             isLoadingMorePhotos = true
         case .error:
-            // TODO: Define error case behavior
             isLoading = false
+            isAlertPresented = true
         }
     }
     
